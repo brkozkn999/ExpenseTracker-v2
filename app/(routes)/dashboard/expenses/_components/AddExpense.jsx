@@ -22,7 +22,7 @@ function AddExpense({ budgetId, user, refreshData }) {
             name: name,
             amount: amount,
             budgetId: budgetId,
-            createdBy: moment().format('DD/MM/yyy')
+            createdAt: moment().format('DD/MM/yyy')
         }).returning({ insertedId: Expenses.id });
 
         setAmount('');

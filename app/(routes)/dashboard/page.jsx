@@ -46,7 +46,7 @@ function Dashboard() {
             id:Expenses.id,
             name:Expenses.name,
             amount:Expenses.amount,
-            createdBy:Expenses.createdBy
+            createdAt:Expenses.createdAt
         }).from(Budgets)
         .rightJoin(Expenses, eq(Budgets.id,Expenses.budgetId))
         .where(eq(Budgets.createdBy,user?.primaryEmailAddress?.emailAddress))
