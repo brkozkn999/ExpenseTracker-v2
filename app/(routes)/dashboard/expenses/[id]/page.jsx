@@ -101,7 +101,6 @@ function ExpensesScreen({ params }) {
               </AlertDialogContent>
             </AlertDialog>
           </div>
-
         </h2>
       <div className='grid grid-cols-1 md:grid-cols-2 mt-6 gap-5'>
         {budgetInfo ? (
@@ -112,6 +111,7 @@ function ExpensesScreen({ params }) {
         <AddExpense budgetId={params.id} user={user} refreshData={()=>getBudgetInfo()}/>
       </div>
       <div className='mt-4'>
+        <h2 className='mt-5 font-bold text-lg'>Latest Expense</h2>
         <ExpenseListTable expensesList={expensesList} refreshData={()=>getBudgetInfo()}/>
       </div>
     </div>

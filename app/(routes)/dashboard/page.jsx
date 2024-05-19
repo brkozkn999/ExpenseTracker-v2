@@ -5,7 +5,6 @@ import CardInfo from './_components/CardInfo';
 import { desc, eq, getTableColumns, sql } from 'drizzle-orm';
 import { db } from '@/utils/dbConfig';
 import { Budgets, Expenses } from '@/utils/schema'
-import { BarChart } from 'recharts';
 import BarChartDashboard from './budgets/_components/BarChartDashboard';
 import BudgetItem from './budgets/_components/BudgetItem';
 import ExpenseListTable from './expenses/_components/ExpenseListTable';
@@ -15,27 +14,26 @@ function Dashboard() {
     const [budgetList, setBudgetList] = useState([]);
     const [expensesList, setExpensesList]= useState([]);
 
-
     useEffect(() => {
-      if (user) {
-        getBudgetList();
-      }
+        if (user) {
+            getBudgetList();
+        }
     }, [user]);
-  
+
     /*
     * Used to get budget list
     */
     const getBudgetList = async () => {
         const result = await db.select({
-          ...getTableColumns(Budgets),
-          totalSpend: sql`sum(${Expenses.amount})`.mapWith(Number),
-          totalItem: sql`count(${Expenses.id})`.mapWith(Number),
+        ...getTableColumns(Budgets),
+        totalSpend: sql`sum(${Expenses.amount})`.mapWith(Number),
+        totalItem: sql`count(${Expenses.id})`.mapWith(Number),
         }).from(Budgets).leftJoin(Expenses, eq(Budgets.id, Expenses.budgetId))
-          .where(eq(Budgets.createdBy, user?.primaryEmailAddress?.emailAddress))
-          .groupBy(Budgets.id)
-          .orderBy(desc(Budgets.id));
-  
-        setBudgetList(result);
+        .where(eq(Budgets.createdBy, user?.primaryEmailAddress?.emailAddress))
+        .groupBy(Budgets.id)
+        .orderBy(desc(Budgets.id));
+
+            setBudgetList(result);
         getAllExpenses();
     };
     /*
@@ -63,6 +61,7 @@ function Dashboard() {
             <div className='grid grid-cols-1 md:grid-cols-3 mt-6 gap-5'>
                 <div className='md:col-span-2'>
                     <BarChartDashboard budgetList={budgetList}/>
+                    <h2 className='mt-5 font-bold text-lg'>Latest Expense</h2>
                     <ExpenseListTable expensesList={expensesList} refreshData={()=>getBudgetList()}/>
                 </div>
                 <div className='grid gap-5'>
